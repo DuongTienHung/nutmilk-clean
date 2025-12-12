@@ -1,73 +1,46 @@
-# React + TypeScript + Vite
+# 🥛 NutMilk ERP Web (Frontend)
+NutMilk ERP Web là ứng dụng web quản lý nội bộ cho doanh nghiệp sản xuất sữa hạt, được xây dựng bằng **React + TypeScript + Vite**.  
+Project tập trung vào giao diện, phân trang theo vai trò và luồng sử dụng ERP.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## ⚙️ Yêu cầu môi trường
+- **Node.js**: v18 trở lên  
+- **npm**: đi kèm Node.js
 
-Currently, two official plugins are available:
+Kiểm tra:
+```bash
+node -v
+npm -v
+🚀 Chạy project từng bước
+Bước 1: Mở thư mục project
+cd NutMilkClean
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Bước 2: Cài dependencies
+npm install
 
-## React Compiler
+Bước 3: Chạy server development
+npm run dev
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+Bước 4: Mở trình duyệt
+Truy cập:http://localhost:8080
 
-## Expanding the ESLint configuration
+👉 Nếu chạy thành công, giao diện web NutMilk sẽ hiển thị.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+🧭 Luồng cơ bản của ứng dụng
+Truy cập Landing Page
+Chuyển sang Login Page
+Đăng nhập và điều hướng theo vai trò:
+Admin
+Quản lý kho
+Nhân viên kho
+Nhân viên mua hàng
+Nhân viên sản xuất
+Nếu không có quyền → trang Unauthorized
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+📁 Cấu trúc chính
+src/
+├── components/   # UI components, layout, form
+├── pages/        # Các trang theo vai trò
+├── contexts/     # Auth & global state
+├── lib/          # Helper & business logic
+├── App.tsx       # Root component
+├── main.tsx      # Entry point
