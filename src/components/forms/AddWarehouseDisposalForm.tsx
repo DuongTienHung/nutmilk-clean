@@ -11,13 +11,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from '@/components/ui/sheet';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { toast } from 'sonner';
 
 interface AddWarehouseDisposalFormProps {
@@ -47,18 +46,30 @@ export function AddWarehouseDisposalForm({
     }
 
     toast.success('Tạo phiếu hủy thành công');
+    handleCancel();
+  };
+
+  const handleCancel = () => {
+    setFormData({
+      itemType: 'material',
+      itemName: '',
+      batchCode: '',
+      quantity: 0,
+      reason: 'expired',
+      note: '',
+    });
     onOpenChange(false);
   };
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[500px] sm:w-[540px] overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle>Tạo phiếu hủy</SheetTitle>
-          <SheetDescription>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="w-full max-w-lg rounded-xl p-6">
+        <DialogHeader>
+          <DialogTitle>Tạo phiếu hủy</DialogTitle>
+          <DialogDescription>
             Ghi nhận vật tư / thành phẩm bị hủy trong kho
-          </SheetDescription>
-        </SheetHeader>
+          </DialogDescription>
+        </DialogHeader>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-5">
           {/* Loại hàng */}
@@ -82,7 +93,9 @@ export function AddWarehouseDisposalForm({
 
           {/* Tên vật tư / sản phẩm */}
           <div className="space-y-2">
-            <Label>Tên vật tư / sản phẩm *</Label>
+            <Label>
+              Tên vật tư / sản phẩm <span className="text-destructive">*</span>
+            </Label>
             <Input
               placeholder="Ví dụ: Đường tinh luyện"
               value={formData.itemName}
@@ -94,7 +107,9 @@ export function AddWarehouseDisposalForm({
 
           {/* Mã lô */}
           <div className="space-y-2">
-            <Label>Mã lô *</Label>
+            <Label>
+              Mã lô <span className="text-destructive">*</span>
+            </Label>
             <Input
               placeholder="LOT-2024-001"
               value={formData.batchCode}
@@ -106,7 +121,9 @@ export function AddWarehouseDisposalForm({
 
           {/* Số lượng */}
           <div className="space-y-2">
-            <Label>Số lượng hủy *</Label>
+            <Label>
+              Số lượng hủy <span className="text-destructive">*</span>
+            </Label>
             <Input
               type="number"
               value={formData.quantity}
@@ -153,20 +170,17 @@ export function AddWarehouseDisposalForm({
             />
           </div>
 
-          <SheetFooter className="mt-8 gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
+          {/* Actions */}
+          <div className="flex justify-end gap-3 pt-4">
+            <Button type="button" variant="outline" onClick={handleCancel}>
               Hủy
             </Button>
             <Button type="submit" className="btn-primary">
               Lưu phiếu hủy
             </Button>
-          </SheetFooter>
+          </div>
         </form>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -4,13 +4,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from '@/components/ui/sheet';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { toast } from 'sonner';
 
 interface AddDisposalFormProps {
@@ -18,7 +17,10 @@ interface AddDisposalFormProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function AddDisposalForm({ open, onOpenChange }: AddDisposalFormProps) {
+export function AddDisposalForm({
+  open,
+  onOpenChange,
+}: AddDisposalFormProps) {
   const [formData, setFormData] = useState({
     batchCode: '',
     quantity: 0,
@@ -31,15 +33,19 @@ export function AddDisposalForm({ open, onOpenChange }: AddDisposalFormProps) {
     onOpenChange(false);
   };
 
+  const handleCancel = () => {
+    onOpenChange(false);
+  };
+
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[500px] sm:w-[540px]">
-        <SheetHeader>
-          <SheetTitle>Tạo Phiếu Hủy</SheetTitle>
-          <SheetDescription>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="w-full max-w-lg rounded-xl p-6">
+        <DialogHeader>
+          <DialogTitle>Tạo phiếu hủy</DialogTitle>
+          <DialogDescription>
             Ghi nhận vật tư / lô hàng bị hủy
-          </SheetDescription>
-        </SheetHeader>
+          </DialogDescription>
+        </DialogHeader>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-5">
           <div className="space-y-2">
@@ -58,7 +64,10 @@ export function AddDisposalForm({ open, onOpenChange }: AddDisposalFormProps) {
               type="number"
               value={formData.quantity}
               onChange={(e) =>
-                setFormData({ ...formData, quantity: Number(e.target.value) })
+                setFormData({
+                  ...formData,
+                  quantity: Number(e.target.value),
+                })
               }
             />
           </div>
@@ -74,16 +83,20 @@ export function AddDisposalForm({ open, onOpenChange }: AddDisposalFormProps) {
             />
           </div>
 
-          <SheetFooter className="mt-8 gap-3">
-            <Button variant="outline" type="button" onClick={() => onOpenChange(false)}>
+          <div className="flex justify-end gap-3 pt-4">
+            <Button
+              variant="outline"
+              type="button"
+              onClick={handleCancel}
+            >
               Hủy
             </Button>
             <Button type="submit" className="btn-primary">
               Lưu
             </Button>
-          </SheetFooter>
+          </div>
         </form>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }

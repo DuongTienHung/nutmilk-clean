@@ -11,13 +11,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from '@/components/ui/sheet';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { toast } from 'sonner';
 
 interface AddMaterialFormProps {
@@ -65,7 +64,11 @@ const suppliers = [
   { id: 'NCC004', name: 'Công ty CP Phụ gia GHI' },
 ];
 
-export function AddMaterialForm({ open, onOpenChange, onSubmit }: AddMaterialFormProps) {
+export function AddMaterialForm({
+  open,
+  onOpenChange,
+  onSubmit,
+}: AddMaterialFormProps) {
   const [formData, setFormData] = useState<MaterialFormData>({
     name: '',
     sku: '',
@@ -79,34 +82,22 @@ export function AddMaterialForm({ open, onOpenChange, onSubmit }: AddMaterialFor
     status: 'active',
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof MaterialFormData, string>>>({});
+  const [errors, setErrors] =
+    useState<Partial<Record<keyof MaterialFormData, string>>>({});
 
   const validateForm = () => {
     const newErrors: Partial<Record<keyof MaterialFormData, string>> = {};
-    
-    if (!formData.name.trim()) {
-      newErrors.name = 'Tên NVL là bắt buộc';
-    }
-    
-    if (!formData.sku.trim()) {
-      newErrors.sku = 'Mã SKU là bắt buộc';
-    }
 
-    if (!formData.group) {
-      newErrors.group = 'Vui lòng chọn nhóm NVL';
-    }
+    if (!formData.name.trim()) newErrors.name = 'Tên NVL là bắt buộc';
+    if (!formData.sku.trim()) newErrors.sku = 'Mã SKU là bắt buộc';
+    if (!formData.group) newErrors.group = 'Vui lòng chọn nhóm NVL';
+    if (!formData.unit) newErrors.unit = 'Vui lòng chọn đơn vị tính';
 
-    if (!formData.unit) {
-      newErrors.unit = 'Vui lòng chọn đơn vị tính';
-    }
-
-    if (formData.minStock < 0) {
+    if (formData.minStock < 0)
       newErrors.minStock = 'Mức tồn tối thiểu không thể âm';
-    }
 
-    if (formData.maxStock < 0) {
+    if (formData.maxStock < 0)
       newErrors.maxStock = 'Mức tồn tối đa không thể âm';
-    }
 
     if (formData.maxStock > 0 && formData.minStock > formData.maxStock) {
       newErrors.minStock = 'Mức tồn tối thiểu không thể lớn hơn tối đa';
@@ -118,7 +109,6 @@ export function AddMaterialForm({ open, onOpenChange, onSubmit }: AddMaterialFor
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!validateForm()) return;
 
     onSubmit?.(formData);
@@ -149,32 +139,31 @@ export function AddMaterialForm({ open, onOpenChange, onSubmit }: AddMaterialFor
   };
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[500px] sm:w-[600px] overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle>Thêm Nguyên Vật Liệu</SheetTitle>
-          <SheetDescription>
-            Điền thông tin nguyên vật liệu mới vào form bên dưới.
-          </SheetDescription>
-        </SheetHeader>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="w-full max-w-2xl rounded-xl p-6 overflow-y-auto max-h-[90vh]">
+        <DialogHeader>
+          <DialogTitle>Thêm nguyên vật liệu</DialogTitle>
+          <DialogDescription>
+            Điền thông tin nguyên vật liệu mới vào form bên dưới
+          </DialogDescription>
+        </DialogHeader>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-6">
           {/* Thông tin cơ bản */}
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase">
               Thông tin cơ bản
             </h3>
 
-            {/* Tên NVL */}
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-foreground">
+              <Label>
                 Tên NVL <span className="text-destructive">*</span>
               </Label>
               <Input
-                id="name"
-                placeholder="Nhập tên nguyên vật liệu"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 className={errors.name ? 'border-destructive' : ''}
               />
               {errors.name && (
@@ -182,16 +171,18 @@ export function AddMaterialForm({ open, onOpenChange, onSubmit }: AddMaterialFor
               )}
             </div>
 
-            {/* Mã SKU */}
             <div className="space-y-2">
-              <Label htmlFor="sku" className="text-foreground">
+              <Label>
                 Mã SKU <span className="text-destructive">*</span>
               </Label>
               <Input
-                id="sku"
-                placeholder="VD: NVL001"
                 value={formData.sku}
-                onChange={(e) => setFormData({ ...formData, sku: e.target.value.toUpperCase() })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    sku: e.target.value.toUpperCase(),
+                  })
+                }
                 className={errors.sku ? 'border-destructive' : ''}
               />
               {errors.sku && (
@@ -199,16 +190,19 @@ export function AddMaterialForm({ open, onOpenChange, onSubmit }: AddMaterialFor
               )}
             </div>
 
-            {/* Nhóm NVL */}
             <div className="space-y-2">
-              <Label className="text-foreground">
+              <Label>
                 Nhóm NVL <span className="text-destructive">*</span>
               </Label>
               <Select
                 value={formData.group}
-                onValueChange={(value) => setFormData({ ...formData, group: value })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, group: value })
+                }
               >
-                <SelectTrigger className={errors.group ? 'border-destructive' : ''}>
+                <SelectTrigger
+                  className={errors.group ? 'border-destructive' : ''}
+                >
                   <SelectValue placeholder="Chọn nhóm NVL" />
                 </SelectTrigger>
                 <SelectContent>
@@ -224,16 +218,19 @@ export function AddMaterialForm({ open, onOpenChange, onSubmit }: AddMaterialFor
               )}
             </div>
 
-            {/* Đơn vị tính */}
             <div className="space-y-2">
-              <Label className="text-foreground">
-                Đơn vị tính cơ bản <span className="text-destructive">*</span>
+              <Label>
+                Đơn vị tính <span className="text-destructive">*</span>
               </Label>
               <Select
                 value={formData.unit}
-                onValueChange={(value) => setFormData({ ...formData, unit: value })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, unit: value })
+                }
               >
-                <SelectTrigger className={errors.unit ? 'border-destructive' : ''}>
+                <SelectTrigger
+                  className={errors.unit ? 'border-destructive' : ''}
+                >
                   <SelectValue placeholder="Chọn đơn vị tính" />
                 </SelectTrigger>
                 <SelectContent>
@@ -250,117 +247,94 @@ export function AddMaterialForm({ open, onOpenChange, onSubmit }: AddMaterialFor
             </div>
           </div>
 
-          {/* Tồn kho và quản lý */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-              Tồn kho và quản lý
-            </h3>
-
-            {/* Checkboxes */}
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="trackByBatch"
-                  checked={formData.trackByBatch}
-                  onCheckedChange={(checked) => 
-                    setFormData({ ...formData, trackByBatch: checked as boolean })
-                  }
-                />
-                <Label htmlFor="trackByBatch" className="text-foreground font-normal cursor-pointer">
-                  Quản lý theo lô
-                </Label>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="hasExpiry"
-                  checked={formData.hasExpiry}
-                  onCheckedChange={(checked) => 
-                    setFormData({ ...formData, hasExpiry: checked as boolean })
-                  }
-                />
-                <Label htmlFor="hasExpiry" className="text-foreground font-normal cursor-pointer">
-                  Có hạn sử dụng
-                </Label>
-              </div>
+          {/* Checkbox */}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                checked={formData.trackByBatch}
+                onCheckedChange={(checked) =>
+                  setFormData({
+                    ...formData,
+                    trackByBatch: checked as boolean,
+                  })
+                }
+              />
+              <Label className="cursor-pointer">Quản lý theo lô</Label>
             </div>
 
-            {/* Min/Max Stock */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="minStock" className="text-foreground">
-                  Mức tồn tối thiểu
-                </Label>
-                <Input
-                  id="minStock"
-                  type="number"
-                  min="0"
-                  placeholder="0"
-                  value={formData.minStock || ''}
-                  onChange={(e) => setFormData({ ...formData, minStock: Number(e.target.value) })}
-                  className={errors.minStock ? 'border-destructive' : ''}
-                />
-                {errors.minStock && (
-                  <p className="text-sm text-destructive">{errors.minStock}</p>
-                )}
-              </div>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                checked={formData.hasExpiry}
+                onCheckedChange={(checked) =>
+                  setFormData({
+                    ...formData,
+                    hasExpiry: checked as boolean,
+                  })
+                }
+              />
+              <Label className="cursor-pointer">Có hạn sử dụng</Label>
+            </div>
+          </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="maxStock" className="text-foreground">
-                  Mức tồn tối đa
-                </Label>
-                <Input
-                  id="maxStock"
-                  type="number"
-                  min="0"
-                  placeholder="0"
-                  value={formData.maxStock || ''}
-                  onChange={(e) => setFormData({ ...formData, maxStock: Number(e.target.value) })}
-                  className={errors.maxStock ? 'border-destructive' : ''}
-                />
-                {errors.maxStock && (
-                  <p className="text-sm text-destructive">{errors.maxStock}</p>
-                )}
-              </div>
+          {/* Min / Max */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Mức tồn tối thiểu</Label>
+              <Input
+                type="number"
+                value={formData.minStock || ''}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    minStock: Number(e.target.value),
+                  })
+                }
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Mức tồn tối đa</Label>
+              <Input
+                type="number"
+                value={formData.maxStock || ''}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    maxStock: Number(e.target.value),
+                  })
+                }
+              />
             </div>
           </div>
 
           {/* Nhà cung cấp */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-              Nhà cung cấp
-            </h3>
-
-            <div className="space-y-2">
-              <Label className="text-foreground">
-                NCC mặc định
-              </Label>
-              <Select
-                value={formData.defaultSupplier}
-                onValueChange={(value) => setFormData({ ...formData, defaultSupplier: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Chọn nhà cung cấp" />
-                </SelectTrigger>
-                <SelectContent>
-                  {suppliers.map((supplier) => (
-                    <SelectItem key={supplier.id} value={supplier.id}>
-                      {supplier.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="space-y-2">
+            <Label>NCC mặc định</Label>
+            <Select
+              value={formData.defaultSupplier}
+              onValueChange={(value) =>
+                setFormData({ ...formData, defaultSupplier: value })
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Chọn nhà cung cấp" />
+              </SelectTrigger>
+              <SelectContent>
+                {suppliers.map((s) => (
+                  <SelectItem key={s.id} value={s.id}>
+                    {s.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Trạng thái */}
           <div className="space-y-2">
-            <Label className="text-foreground">
-              Trạng thái
-            </Label>
+            <Label>Trạng thái</Label>
             <Select
               value={formData.status}
-              onValueChange={(value: 'active' | 'inactive') => 
+              onValueChange={(value: 'active' | 'inactive') =>
                 setFormData({ ...formData, status: value })
               }
             >
@@ -374,16 +348,16 @@ export function AddMaterialForm({ open, onOpenChange, onSubmit }: AddMaterialFor
             </Select>
           </div>
 
-          <SheetFooter className="mt-8 gap-3">
-            <Button type="button" variant="outline" onClick={handleCancel}>
+          <div className="flex justify-end gap-3 pt-4">
+            <Button variant="outline" type="button" onClick={handleCancel}>
               Hủy
             </Button>
             <Button type="submit" className="btn-primary">
               Lưu
             </Button>
-          </SheetFooter>
+          </div>
         </form>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }

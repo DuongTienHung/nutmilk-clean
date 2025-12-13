@@ -10,13 +10,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from '@/components/ui/sheet';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { Eye, EyeOff } from 'lucide-react';
 
@@ -57,24 +56,28 @@ export function AddUserForm({ open, onOpenChange, onSubmit }: AddUserFormProps) 
     status: 'active',
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof UserFormData, string>>>({});
+  const [errors, setErrors] =
+    useState<Partial<Record<keyof UserFormData, string>>>({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const validateForm = () => {
     const newErrors: Partial<Record<keyof UserFormData, string>> = {};
-    
+
     if (!formData.fullName.trim()) {
       newErrors.fullName = 'Họ tên là bắt buộc';
     }
-    
+
     if (!formData.username.trim()) {
       newErrors.username = 'Username là bắt buộc';
     } else if (formData.username.length < 3) {
       newErrors.username = 'Username phải có ít nhất 3 ký tự';
     }
 
-    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    if (
+      formData.email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+    ) {
       newErrors.email = 'Email không hợp lệ';
     }
 
@@ -100,16 +103,14 @@ export function AddUserForm({ open, onOpenChange, onSubmit }: AddUserFormProps) 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!validateForm()) return;
 
     onSubmit?.(formData);
     toast.success('Thêm người dùng thành công');
-    handleReset();
-    onOpenChange(false);
+    handleCancel();
   };
 
-  const handleReset = () => {
+  const handleCancel = () => {
     setFormData({
       fullName: '',
       username: '',
@@ -123,22 +124,18 @@ export function AddUserForm({ open, onOpenChange, onSubmit }: AddUserFormProps) 
     setErrors({});
     setShowPassword(false);
     setShowConfirmPassword(false);
-  };
-
-  const handleCancel = () => {
-    handleReset();
     onOpenChange(false);
   };
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[500px] sm:w-[540px] overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle>Thêm Người Dùng</SheetTitle>
-          <SheetDescription>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="w-full max-w-2xl rounded-xl p-6">
+        <DialogHeader>
+          <DialogTitle>Thêm người dùng</DialogTitle>
+          <DialogDescription>
             Điền thông tin người dùng mới vào form bên dưới.
-          </SheetDescription>
-        </SheetHeader>
+          </DialogDescription>
+        </DialogHeader>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-6">
           {/* Thông tin cá nhân */}
@@ -147,16 +144,16 @@ export function AddUserForm({ open, onOpenChange, onSubmit }: AddUserFormProps) 
               Thông tin cá nhân
             </h3>
 
-            {/* Họ tên */}
             <div className="space-y-2">
-              <Label htmlFor="fullName" className="text-foreground">
+              <Label>
                 Họ tên <span className="text-destructive">*</span>
               </Label>
               <Input
-                id="fullName"
                 placeholder="Nhập họ tên đầy đủ"
                 value={formData.fullName}
-                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, fullName: e.target.value })
+                }
                 className={errors.fullName ? 'border-destructive' : ''}
               />
               {errors.fullName && (
@@ -164,16 +161,19 @@ export function AddUserForm({ open, onOpenChange, onSubmit }: AddUserFormProps) 
               )}
             </div>
 
-            {/* Username */}
             <div className="space-y-2">
-              <Label htmlFor="username" className="text-foreground">
+              <Label>
                 Username <span className="text-destructive">*</span>
               </Label>
               <Input
-                id="username"
-                placeholder="Nhập username"
+                placeholder="username"
                 value={formData.username}
-                onChange={(e) => setFormData({ ...formData, username: e.target.value.toLowerCase() })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    username: e.target.value.toLowerCase(),
+                  })
+                }
                 className={errors.username ? 'border-destructive' : ''}
               />
               {errors.username && (
@@ -181,17 +181,15 @@ export function AddUserForm({ open, onOpenChange, onSubmit }: AddUserFormProps) 
               )}
             </div>
 
-            {/* Email */}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-foreground">
-                Email
-              </Label>
+              <Label>Email</Label>
               <Input
-                id="email"
                 type="email"
                 placeholder="email@example.com"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 className={errors.email ? 'border-destructive' : ''}
               />
               {errors.email && (
@@ -199,17 +197,14 @@ export function AddUserForm({ open, onOpenChange, onSubmit }: AddUserFormProps) 
               )}
             </div>
 
-            {/* Số điện thoại */}
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-foreground">
-                Số điện thoại
-              </Label>
+              <Label>Số điện thoại</Label>
               <Input
-                id="phone"
-                type="tel"
                 placeholder="0901234567"
                 value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
               />
             </div>
           </div>
@@ -222,30 +217,26 @@ export function AddUserForm({ open, onOpenChange, onSubmit }: AddUserFormProps) 
 
             {/* Mật khẩu */}
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-foreground">
+              <Label>
                 Mật khẩu <span className="text-destructive">*</span>
               </Label>
               <div className="relative">
                 <Input
-                  id="password"
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Nhập mật khẩu"
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
                   className={errors.password ? 'border-destructive pr-10' : 'pr-10'}
                 />
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                  className="absolute right-0 top-0 h-full px-3"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4 text-muted-foreground" />
-                  ) : (
-                    <Eye className="h-4 w-4 text-muted-foreground" />
-                  )}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </Button>
               </div>
               {errors.password && (
@@ -253,55 +244,66 @@ export function AddUserForm({ open, onOpenChange, onSubmit }: AddUserFormProps) 
               )}
             </div>
 
-            {/* Xác nhận mật khẩu */}
+            {/* Xác nhận */}
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-foreground">
+              <Label>
                 Xác nhận mật khẩu <span className="text-destructive">*</span>
               </Label>
               <div className="relative">
                 <Input
-                  id="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
-                  placeholder="Nhập lại mật khẩu"
                   value={formData.confirmPassword}
-                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  className={errors.confirmPassword ? 'border-destructive pr-10' : 'pr-10'}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      confirmPassword: e.target.value,
+                    })
+                  }
+                  className={
+                    errors.confirmPassword ? 'border-destructive pr-10' : 'pr-10'
+                  }
                 />
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-0 top-0 h-full px-3"
+                  onClick={() =>
+                    setShowConfirmPassword(!showConfirmPassword)
+                  }
                 >
                   {showConfirmPassword ? (
-                    <EyeOff className="h-4 w-4 text-muted-foreground" />
+                    <EyeOff className="w-4 h-4" />
                   ) : (
-                    <Eye className="h-4 w-4 text-muted-foreground" />
+                    <Eye className="w-4 h-4" />
                   )}
                 </Button>
               </div>
               {errors.confirmPassword && (
-                <p className="text-sm text-destructive">{errors.confirmPassword}</p>
+                <p className="text-sm text-destructive">
+                  {errors.confirmPassword}
+                </p>
               )}
             </div>
 
             {/* Vai trò */}
             <div className="space-y-2">
-              <Label className="text-foreground">
+              <Label>
                 Vai trò <span className="text-destructive">*</span>
               </Label>
               <Select
                 value={formData.role}
-                onValueChange={(value) => setFormData({ ...formData, role: value })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, role: value })
+                }
               >
                 <SelectTrigger className={errors.role ? 'border-destructive' : ''}>
                   <SelectValue placeholder="Chọn vai trò" />
                 </SelectTrigger>
                 <SelectContent>
-                  {roles.map((role) => (
-                    <SelectItem key={role.value} value={role.value}>
-                      {role.label}
+                  {roles.map((r) => (
+                    <SelectItem key={r.value} value={r.value}>
+                      {r.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -313,12 +315,10 @@ export function AddUserForm({ open, onOpenChange, onSubmit }: AddUserFormProps) 
 
             {/* Trạng thái */}
             <div className="space-y-2">
-              <Label className="text-foreground">
-                Trạng thái
-              </Label>
+              <Label>Trạng thái</Label>
               <Select
                 value={formData.status}
-                onValueChange={(value: 'active' | 'locked') => 
+                onValueChange={(value: 'active' | 'locked') =>
                   setFormData({ ...formData, status: value })
                 }
               >
@@ -333,16 +333,17 @@ export function AddUserForm({ open, onOpenChange, onSubmit }: AddUserFormProps) 
             </div>
           </div>
 
-          <SheetFooter className="mt-8 gap-3">
+          {/* Actions */}
+          <div className="flex justify-end gap-3 pt-4">
             <Button type="button" variant="outline" onClick={handleCancel}>
               Hủy
             </Button>
             <Button type="submit" className="btn-primary">
               Lưu
             </Button>
-          </SheetFooter>
+          </div>
         </form>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }

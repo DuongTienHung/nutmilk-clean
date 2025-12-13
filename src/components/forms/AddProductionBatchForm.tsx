@@ -11,13 +11,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from '@/components/ui/sheet';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { toast } from 'sonner';
 
 interface AddProductionBatchFormProps {
@@ -50,19 +49,25 @@ export function AddProductionBatchForm({
     onOpenChange(false);
   };
 
+  const handleCancel = () => {
+    onOpenChange(false);
+  };
+
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[500px] sm:w-[540px] overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle>Tạo lô sản xuất</SheetTitle>
-          <SheetDescription>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="w-full max-w-lg rounded-xl p-6">
+        <DialogHeader>
+          <DialogTitle>Tạo lô sản xuất</DialogTitle>
+          <DialogDescription>
             Nhập thông tin lô thành phẩm vừa sản xuất
-          </SheetDescription>
-        </SheetHeader>
+          </DialogDescription>
+        </DialogHeader>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-5">
           <div className="space-y-2">
-            <Label>Tên sản phẩm *</Label>
+            <Label>
+              Tên sản phẩm <span className="text-destructive">*</span>
+            </Label>
             <Input
               placeholder="Ví dụ: Sữa hạt óc chó"
               value={formData.productName}
@@ -73,7 +78,9 @@ export function AddProductionBatchForm({
           </div>
 
           <div className="space-y-2">
-            <Label>Mã lô sản xuất *</Label>
+            <Label>
+              Mã lô sản xuất <span className="text-destructive">*</span>
+            </Label>
             <Input
               placeholder="PROD-2024-001"
               value={formData.batchCode}
@@ -84,7 +91,9 @@ export function AddProductionBatchForm({
           </div>
 
           <div className="space-y-2">
-            <Label>Số lượng sản xuất *</Label>
+            <Label>
+              Số lượng sản xuất <span className="text-destructive">*</span>
+            </Label>
             <Input
               type="number"
               value={formData.quantity}
@@ -144,20 +153,16 @@ export function AddProductionBatchForm({
             />
           </div>
 
-          <SheetFooter className="mt-8 gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
+          <div className="flex justify-end gap-3 pt-4">
+            <Button variant="outline" type="button" onClick={handleCancel}>
               Hủy
             </Button>
             <Button type="submit" className="btn-primary">
               Lưu
             </Button>
-          </SheetFooter>
+          </div>
         </form>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }

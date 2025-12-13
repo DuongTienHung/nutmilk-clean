@@ -11,13 +11,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from '@/components/ui/sheet';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { toast } from 'sonner';
 
 interface AddPurchaseRequestFormProps {
@@ -49,19 +48,25 @@ export function AddPurchaseRequestForm({
     onOpenChange(false);
   };
 
+  const handleCancel = () => {
+    onOpenChange(false);
+  };
+
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[500px] sm:w-[540px] overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle>Tạo yêu cầu mua</SheetTitle>
-          <SheetDescription>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="w-full max-w-lg rounded-xl p-6">
+        <DialogHeader>
+          <DialogTitle>Tạo yêu cầu mua</DialogTitle>
+          <DialogDescription>
             Nhập thông tin yêu cầu mua vật tư
-          </SheetDescription>
-        </SheetHeader>
+          </DialogDescription>
+        </DialogHeader>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-5">
           <div className="space-y-2">
-            <Label>Tên vật tư *</Label>
+            <Label>
+              Tên vật tư <span className="text-destructive">*</span>
+            </Label>
             <Input
               placeholder="Ví dụ: Đường tinh luyện"
               value={formData.materialName}
@@ -73,7 +78,9 @@ export function AddPurchaseRequestForm({
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>Số lượng *</Label>
+              <Label>
+                Số lượng <span className="text-destructive">*</span>
+              </Label>
               <Input
                 type="number"
                 value={formData.quantity}
@@ -137,20 +144,16 @@ export function AddPurchaseRequestForm({
             />
           </div>
 
-          <SheetFooter className="mt-8 gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
+          <div className="flex justify-end gap-3 pt-4">
+            <Button variant="outline" type="button" onClick={handleCancel}>
               Hủy
             </Button>
             <Button type="submit" className="btn-primary">
               Gửi yêu cầu
             </Button>
-          </SheetFooter>
+          </div>
         </form>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }

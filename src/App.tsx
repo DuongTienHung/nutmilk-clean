@@ -16,6 +16,9 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import Suppliers from "./pages/admin/Suppliers";
 import Materials from "./pages/admin/Materials";
 import UsersPage from "./pages/admin/UsersPage";
+import Pricing from "./pages/admin/Pricing";
+import RolesPermissions from "./pages/admin/RolesPermissions";
+
 
 // Warehouse Manager pages
 import WarehouseManagerDashboard from "./pages/warehouse-manager/WarehouseManagerDashboard";
@@ -55,10 +58,8 @@ import Stocktake from "./pages/warehouse-staff/Stocktake";
 import StaffDisposals from "./pages/warehouse-staff/StaffDisposals";
 import StaffHistory from "./pages/warehouse-staff/StaffHistory";
 // settings
-import Settings from "./pages/settings";
-// profile
-import Profile from "./pages/profile";
-
+import Settings from "./pages/settings/Index";
+import Profile from "./pages/profile/Index";
 
 const queryClient = new QueryClient();
 
@@ -79,9 +80,9 @@ const App = () => (
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/suppliers" element={<Suppliers />} />
             <Route path="/admin/materials" element={<Materials />} />
-            <Route path="/admin/pricing" element={<AdminDashboard />} />
+            <Route path="/admin/pricing" element={<Pricing />} />
             <Route path="/admin/users" element={<UsersPage />} />
-            <Route path="/admin/roles" element={<AdminDashboard />} />
+            <Route path="/admin/roles" element={<RolesPermissions />} />
 
             {/* Warehouse Manager routes */}
             <Route path="/warehouse-manager" element={<WarehouseManagerDashboard />} />
@@ -121,7 +122,7 @@ const App = () => (
             <Route path="/warehouse-staff/disposals" element={<StaffDisposals />} />
             <Route path="/warehouse-staff/history" element={<StaffHistory />} />
             {/* setting and profile routes */}
-            {/* User routes */}
+            
             {/* User routes */}
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />

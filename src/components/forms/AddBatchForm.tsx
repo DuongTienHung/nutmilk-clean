@@ -11,13 +11,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-} from '@/components/ui/sheet';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { toast } from 'sonner';
 
 interface AddBatchFormProps {
@@ -36,7 +35,11 @@ export interface BatchFormData {
   status: 'available' | 'locked';
 }
 
-export function AddBatchForm({ open, onOpenChange, onSubmit }: AddBatchFormProps) {
+export function AddBatchForm({
+  open,
+  onOpenChange,
+  onSubmit,
+}: AddBatchFormProps) {
   const [formData, setFormData] = useState<BatchFormData>({
     materialCode: '',
     batchCode: '',
@@ -98,14 +101,14 @@ export function AddBatchForm({ open, onOpenChange, onSubmit }: AddBatchFormProps
   };
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[500px] sm:w-[540px] overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle>Tạo Lô Mới</SheetTitle>
-          <SheetDescription>
-            Nhập thông tin lô vật tư hoặc thành phẩm.
-          </SheetDescription>
-        </SheetHeader>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="w-full max-w-lg rounded-xl p-6">
+        <DialogHeader>
+          <DialogTitle>Tạo lô mới</DialogTitle>
+          <DialogDescription>
+            Nhập thông tin lô vật tư hoặc thành phẩm
+          </DialogDescription>
+        </DialogHeader>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-5">
           <div className="space-y-2">
@@ -207,16 +210,16 @@ export function AddBatchForm({ open, onOpenChange, onSubmit }: AddBatchFormProps
             </Select>
           </div>
 
-          <SheetFooter className="mt-8 gap-3">
+          <div className="flex justify-end gap-3 pt-4">
             <Button type="button" variant="outline" onClick={handleCancel}>
               Hủy
             </Button>
             <Button type="submit" className="btn-primary">
               Lưu
             </Button>
-          </SheetFooter>
+          </div>
         </form>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 }
