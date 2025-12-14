@@ -112,10 +112,7 @@ export default function Disposals() {
             <h1 className="text-2xl font-bold text-foreground">Hủy hàng</h1>
             <p className="text-muted-foreground">Quản lý hủy hàng và lý do</p>
           </div>
-          <Button className="btn-primary gap-2"onClick={() => setIsAddFormOpen(true)}>
-            <Plus className="w-4 h-4" />
-            Tạo phiếu hủy
-          </Button>
+          
         </div>
 
         {/* Stats */}
@@ -291,10 +288,7 @@ export default function Disposals() {
             )}
           </SheetContent>
         </Sheet>
-        <AddDisposalForm
-          open={isAddFormOpen}
-          onOpenChange={setIsAddFormOpen}
-        />
+        
       </div>
     </DashboardLayout>
   );
