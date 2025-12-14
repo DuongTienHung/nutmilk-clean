@@ -25,6 +25,9 @@ import WarehouseManagerDashboard from "./pages/warehouse-manager/WarehouseManage
 import Inventory from "./pages/warehouse-manager/Inventory";
 import Batches from "./pages/warehouse-manager/Batches";
 import Receipts from "./pages/warehouse-manager/Receipts";
+import MaterialQuotas from "./pages/warehouse-manager/MaterialQuotas";
+import PurchaseApproval from "./pages/warehouse-manager/PurchaseApproval";
+import CreateProductionOrder from "./pages/warehouse-manager/CreateProductionOrder";
 import Issues from "./pages/warehouse-manager/Issues";
 import Disposals from "./pages/warehouse-manager/Disposals";
 import Reports from "./pages/warehouse-manager/Reports";
@@ -89,6 +92,9 @@ const App = () => (
             <Route path="/warehouse-manager/inventory" element={<Inventory />} />
             <Route path="/warehouse-manager/batches" element={<Batches />} />
             <Route path="/warehouse-manager/receipts" element={<Receipts />} />
+            <Route path="/warehouse-manager/quotas" element={<MaterialQuotas />} />
+            <Route path="/warehouse-manager/purchase-approval" element={<PurchaseApproval />} />
+            <Route path="/warehouse-manager/create-order" element={<CreateProductionOrder />} />
             <Route path="/warehouse-manager/issues" element={<Issues />} />
             <Route path="/warehouse-manager/disposals" element={<Disposals />} />
             <Route path="/warehouse-manager/reports" element={<Reports />} />

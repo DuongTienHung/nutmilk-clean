@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { Button } from '@/components/ui/button';
-import { AddPurchaseRequestForm } from '@/components/forms/AddPurchaseRequestForm';
 import { Input } from '@/components/ui/input';
 import { 
   Table, 
@@ -112,10 +111,6 @@ export default function Requests() {
             <h1 className="text-2xl font-bold text-foreground">Yêu cầu mua (PR)</h1>
             <p className="text-muted-foreground">Quản lý yêu cầu mua từ các bộ phận</p>
           </div>
-          <Button className="btn-primary gap-2" onClick={() => setIsAddFormOpen(true)}>
-            <Plus className="w-4 h-4" />
-            Tạo yêu cầu
-          </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -271,7 +266,6 @@ export default function Requests() {
             )}
           </SheetContent>
         </Sheet>
-        <AddPurchaseRequestForm open={isAddFormOpen} onOpenChange={setIsAddFormOpen} />
       </div>
     </DashboardLayout>
   );
